@@ -7,20 +7,6 @@ const result = document.getElementById('result');
 const addBook = document.getElementById('addBook');
 
 
-const createDeleteButton = () => {
-    const btn = document.createElement('button');
-    btn.appendChild(document.createTextNode('Delete book'));
-    btn.style.marginLeft = '10px';
-    btn.onclick = function () {
-        const li = this.parentElement;
-        const index = Array.from(result.children).indexOf(li);
-        library.splice(index, 1);
-        result.removeChild(li);
-    }
-    return btn;
-}
-
-
 //isbn,title,author,year
 addBook.onclick = function () {
     // TODO: get data from inputs, and put book in <ol id="result"></ol>
@@ -31,7 +17,17 @@ addBook.onclick = function () {
         const li = document.createElement('li');
         li.appendChild(document.createTextNode(book.toString()))
         result.appendChild(li);
-        li.appendChild(createDeleteButton());
+        
+
+        const btn = document.createElement('button');
+        btn.appendChild(document.createTextNode('Delete book'));
+        li.appendChild(btn);
+        btn.style.marginLeft = '10px';
+        btn.onclick = function (event) {
+            event.target.parentElement.remove()
+            const index = findBook(library, book.isbn);
+            library.splice(index, 1);            
+        }
     } else {
         alert(`Book with isbn = ${isbn.value} exists`);
     }
