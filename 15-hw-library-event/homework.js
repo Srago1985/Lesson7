@@ -5,7 +5,20 @@ const author = document.getElementById('author');
 const year = document.getElementById('year');
 const result = document.getElementById('result');
 const addBook = document.getElementById('addBook');
-const deleteBook = document.getElementById('deleteBook');
+
+
+const createDeleteButton = () => {
+    const btn = document.createElement('button');
+    btn.appendChild(document.createTextNode('Delete book'));
+    btn.style.marginLeft = '10px';
+    btn.onclick = function () {
+        const li = this.parentElement;
+        const index = Array.from(result.children).indexOf(li);
+        library.splice(index, 1);
+        result.removeChild(li);
+    }
+    return btn;
+}
 
 
 //isbn,title,author,year
@@ -18,19 +31,9 @@ addBook.onclick = function () {
         const li = document.createElement('li');
         li.appendChild(document.createTextNode(book.toString()))
         result.appendChild(li);
+        li.appendChild(createDeleteButton());
     } else {
         alert(`Book with isbn = ${isbn.value} exists`);
-    }
-    clearInputs();
-}
-
-deleteBook.onclick = function () {
-    const index = findBook(library, isbn.value);
-    if (index !== -1) {
-        library.splice(index, 1);
-        result.removeChild(result.children[index]);        
-    } else {
-        alert(`Book with isbn = ${isbn.value} not found`);
     }
     clearInputs();
 }
